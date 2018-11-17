@@ -1,0 +1,3 @@
+32  bala  20  20
+10  arroz  2  50
+20  cigarro  10  150

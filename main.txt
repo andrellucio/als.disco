@@ -1,0 +1,47 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+#include <vector>
+#include "Produto.h"
+
+using namespace std;
+
+
+int main()
+{
+    int op;
+    Produto o;      //objeto "o" da classe produto
+    o.leitura();
+    o.listagem();
+
+    while ( op!= 4 )
+    {
+        cout<<endl<<endl<<"                                    OPCOES:\n                        "<<endl<<"                        1- Incluir produtos\n             "<<endl<<"                        2- Apagar produtos\n               "<<endl<<"                        3- Exibir lista completa\n"<<endl<<"                        4- Encerrar tarefa\n             "<<endl<<endl<<"  Digite: ";
+        cin>>op;
+
+      switch (op)
+        {
+        case 1:
+            cout<<"\n INCLUIR\n"<<endl;
+            o.adicionar();
+            break;
+
+        case 2:
+            cout<<"\n EXCLUIR\n"<<endl;
+            o.excluir();
+            break;
+
+        case 3:
+            o.listagem();
+            break;
+
+        case 4:
+            cout<<endl<<"Programa encerrado."<<endl;
+            break;
+
+        default:
+            cout<<endl<<"Opcao invalida";
+        }
+    }
+}
