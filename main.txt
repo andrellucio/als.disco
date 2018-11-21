@@ -1,3 +1,6 @@
+//Felipe Pereira de Castro
+//André Lucio de Souza
+
 #include <iostream>
 #include <fstream>
 #include <string>
