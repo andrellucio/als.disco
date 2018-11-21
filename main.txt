@@ -11,7 +11,7 @@ using namespace std;
 int main()
 {
     int op;
-    Produto o;      //declarando a variável "o" do tipo "Produto"
+    Produto o;      //declarando a variável "o" do tipo "Produto" 
     o.leitura();  //chama o método leitura 
     o.listagem();
 
