@@ -18,7 +18,7 @@ vector <produto_reg> produto_vet(100); // Declaração do vector<nomeDoTipo> nom
 
 void Produto::leitura()    //leitura do arquivo txt
     {
-        int ct=0, achei=-1,tt=0;
+        int ct=0, achei=-1;
         int cod;
         string marca;
         double preco;
