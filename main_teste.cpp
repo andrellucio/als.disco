@@ -13,26 +13,23 @@ int quantmaior;
 class prod
 {
     public:
-      int regcod;
-      string regmarca;
-      double regpreco;
-      int regquant;
+      int cod;
+      string marca;
+      double preco;
+      int quant;
 
-      prod( int regcod, string regmarca, double regpreco, int regquant)
+      prod( int cod, string marca, double preco, int quant)
       {
-        this->regcod = regcod;
-        this->regmarca = regmarca;
-        this->regpreco = regpreco;
-        this->regquant = regquant;
+        this->cod = cod;
+        this->marca = marca;
+        this->preco = preco;
+        this->quant = quant;
       }
 };
 
-/*class produto
-{
-public:*/
-    void leitura(vector<prod> dados)    //leitura do arquivo txt
+    void leitura(vector<prod> &dados)    //leitura do arquivo txt
     {
-        int ct=0, achei=-1;
+        int achei=-1;
         int cod;
         string marca;
         double preco;
@@ -49,37 +46,38 @@ public:*/
             if (quant>=quantmaior)quantmaior=quant;
             if (ler)
             {
-                produto_vet[ct].regcod=cod;
-                produto_vet[ct].regmarca=marca;
-                produto_vet[ct].regpreco=preco;
-                produto_vet[ct].regquant=quant;
-                ct++;
+                prod p(cod, marca, preco, quant);
+                dados.push_back(p);
+
+                ler>>cod;
+                ler>>marca;
+                ler>>preco;
+                ler>>quant;
             }
-        }while ((ler)&&(ct<100));
+        }while ((ler));
         ler.close();
-        produto_tot=ct;
     }
 //-----------------------------------------------------------
-    void escrita()          //escrever no arquivo txt
+    void escrita(vector<prod> dados)          //escrever no arquivo txt
     {
         ofstream escrever;
         escrever.open("produto.txt");
-        for (int ct=0;ct<produto_tot;ct++)
+        for (int ct=0;ct<dados.size();ct++)
         {
-            escrever<<produto_vet[ct].regcod<<"  ";
-            escrever<<produto_vet[ct].regmarca<<"  ";
-            escrever<<produto_vet[ct].regpreco<<"  ";
-            escrever<<produto_vet[ct].regquant<<endl;
+            escrever<<dados[ct].cod<<"  ";
+            escrever<<dados[ct].marca<<"  ";
+            escrever<<dados[ct].preco<<"  ";
+            escrever<<dados[ct].quant<<endl;
         }
         escrever.close();
     }
 //-----------------------------------------------------------
-    void mostrar(int achei)     //mostra a lista de produtos
+    void mostrar(vector<prod> dados,int achei)     //mostra a lista de produtos
     {
-        cout<<endl<<"    "<<setw(3)<<produto_vet[achei].regcod<<"   "; // setw ->Define a largura do campo a ser usada nas operações de saída (caracteres). 
-        cout<<"    "<<setw(10)<<left<<produto_vet[achei].regmarca<<"  ";
-        cout<<"    "<<setw(7)<<fixed<<setprecision(2)<<right<<produto_vet[achei].regpreco<<"  ";
-        cout<<"    "<<setw(7)<<right<<produto_vet[achei].regquant<<"     ";
+        cout<<endl<<"    "<<setw(3)<<dados[achei].cod<<"   "; // setw ->Define a largura do campo a ser usada nas operações de saída (caracteres). 
+        cout<<"    "<<setw(10)<<left<<dados[achei].marca<<"  ";
+        cout<<"    "<<setw(7)<<fixed<<setprecision(2)<<right<<dados[achei].preco<<"  ";
+        cout<<"    "<<setw(7)<<right<<dados[achei].quant<<"     ";
     }
 //------------------------------------------------------------------------
     void cabecalho()      //imprime o cabeçalho
@@ -88,47 +86,47 @@ public:*/
         cout      <<"|---------|---------------|------------|-----------|";
     }
 //------------------------------------------------------------------
-    void listagem()       //organiza os produtos abaixo do cabeçalho
+    void listagem(vector<prod> dados)       //organiza os produtos abaixo do cabeçalho
     {
         cabecalho();
         for (int i=1;i<=maior;i++)
         {
             for (int ct=0; ct<=produto_tot; ct++)
             {
-                if (produto_vet[ct].regcod==i) mostrar(ct);
+                if (dados[ct].cod==i) mostrar(dados, ct);
             }
         }
     }
 //----------------------------------------------------------------------
-    void excluir()        //exclui produtos
+    void excluir(vector<prod> dados)        //exclui produtos
     {
         int cod2,achei=-1,ct=0, cod=0;
         cout<<"Digite o codigo: ";
         cin>>cod;
 
         for (ct=0;ct<produto_tot;ct++)
-            if (produto_vet[ct].regcod==cod) achei=ct;
+            if (dados[ct].cod==cod) achei=ct;
 
         if (achei>=0)
         {
             cod2=achei+1;
             for (int ct=achei;ct<produto_tot;ct++)
             {
-                produto_vet[achei].regcod=produto_vet[cod2].regcod;
-                produto_vet[achei].regmarca=produto_vet[cod2].regmarca;
-                produto_vet[achei].regpreco=produto_vet[cod2].regpreco;
-                produto_vet[achei].regquant=produto_vet[cod2].regquant;
+                dados[achei].cod=dados[cod2].cod;
+                dados[achei].marca=dados[cod2].marca;
+                dados[achei].preco=dados[cod2].preco;
+                dados[achei].quant=dados[cod2].quant;
                 cod2++;
                 achei++;
             }
             produto_tot--;
-            escrita();
+            escrita(dados);
             cout<<endl<<" EXCLUIDA COM SUCESSO!!!"<<endl<<endl;
         }
         else cout<<endl<<"Esse codigo de produto nao existe"<<endl<<endl;
     }
 //-----------------------------------------------------------------------------
-    void adicionar()          //adiciona produtos à lista
+    void adicionar(vector<prod> dados)          //adiciona produtos à lista
     {
         int cod;
         string marca;
@@ -142,7 +140,7 @@ public:*/
             achei=0;
             for (int ct=0;ct<produto_tot;ct++)
             {
-                if ((cod==produto_vet[ct].regcod))
+                if (cod==dados[ct].cod)
                 {
                     achei=1;
                 }
@@ -150,29 +148,28 @@ public:*/
         }while (achei==1);
 
         if (maior<cod)maior=cod;
-        produto_vet[produto_tot].regcod=cod;
+        dados[produto_tot].cod=cod;
         cout<<"Digite o produto comprado: ";
         cin>>marca;
-        produto_vet[produto_tot].regmarca=marca;
+        dados[produto_tot].marca=marca;
         cout<<"Digite o valor do produto: ";
         cin>>preco;
-        produto_vet[produto_tot].regpreco=preco;
+        dados[produto_tot].preco=preco;
         cout<<"Digite a quantidade comprada: ";
         cin>>quant;
-        produto_vet[produto_tot].regquant=quant;
+        dados[produto_tot].quant=quant;
         cout<<endl<<"PRODUTO ADICIONADO COM SUCESSO!!!"<<endl<<endl;
         produto_tot++;
-        escrita();
+        escrita(dados);
     }    
-/*};*/
 //-----------------------------------------------------------------------------------------------
 int main()
 {
-    vector<int> dados;
+    vector<prod> dados;
     
     int op;
-    leitura();
-    listagem();
+    leitura(dados);
+    listagem(dados);
 
     while ( op!= 4 )
     {
@@ -183,16 +180,16 @@ int main()
         {
         case 1:
             cout<<"\n INCLUIR\n"<<endl;
-            adicionar();
+            adicionar(dados);
             break;
 
         case 2:
             cout<<"\n EXCLUIR\n"<<endl;
-            excluir();
+            excluir(dados);
             break;
 
         case 3:
-            listagem();
+            listagem(dados);
             break;
 
         case 4:
